@@ -5,3 +5,6 @@
     K3S_TOKEN={{ node_token }} sh -
   args:
     creates: /usr/local/bin/k3s-agent
+
+
+# K100859b9514af647b8bc6981dead33dbb45af5b5d6e1fb6ebfd3cea3f13e49b727::server:2fbce8440bb6d4378d80842e1c3cf11c

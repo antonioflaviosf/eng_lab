@@ -16,6 +16,6 @@
   set_fact:
     node_token: "{{ hostvars[groups['masters'][0]]['node_token'] }}"
   
-- name: Run worker setup
-  include_tasks: worker.yml
-  when: "'workers' in group_names"
+# - name: Run worker setup
+#   include_tasks: worker.yml
+#   when: "'workers' in group_names"
