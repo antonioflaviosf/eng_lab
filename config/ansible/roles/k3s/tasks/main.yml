@@ -1,0 +1,21 @@
+- name: Run master setup
+  include_tasks: master.yml
+  when: "'masters' in group_names"
+
+- name: Get node token from master
+  command: cat /var/lib/rancher/k3s/server/node-token
+  register: node_token_raw
+  when: "'masters' in group_names"
+
+- name: Set token fact
+  set_fact:
+    node_token: "{{ node_token_raw.stdout }}"
+  when: "'masters' in group_names"
+
+- name: Share token with all hosts
+  set_fact:
+    node_token: "{{ hostvars[groups['masters'][0]]['node_token'] }}"
+  
+- name: Run worker setup
+  include_tasks: worker.yml
+  when: "'workers' in group_names"

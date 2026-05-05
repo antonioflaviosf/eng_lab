@@ -1,0 +1,4 @@
+nodes: 
+  - name: vm-master
+  - name: vm-worker-1
+  - name: vm-worker-2

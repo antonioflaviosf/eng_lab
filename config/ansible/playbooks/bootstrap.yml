@@ -1,0 +1,16 @@
+- name: Bootstrap all nodes
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Update apt
+      apt:
+        update_cache: yes
+
+    - name: Install base packages
+      apt:
+        name:
+          - curl
+          - vim
+          - git
+        state: present
