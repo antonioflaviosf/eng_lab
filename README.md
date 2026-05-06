@@ -1,30 +1,37 @@
-markdownplatform-engineering-lab/
-├── README.md
-├── docs/
-│   ├── architecture.md
-│   └── environments.md
-│
-├── environments/
-│   ├── local/
-│   │   └── incus/
-│   │       ├── create.sh
-│   │       ├── destroy.sh
-│   │       └── config.yaml
-│   │
-│   └── prod/
-│       └── opentofu/
-│           ├── modules/
-│           └── environments/
-│
-├── config/
-│   └── ansible/
-│       ├── inventories/
-│       │   ├── local/
-│       │   └── prod/
-│       ├── roles/
-│       └── playbooks/
-│
-├── platform/
-│   └── kubernetes/
-│
-└── Makefile
+```bash
+eng-lab/
+├── config
+│   └── ansible
+│       ├── ansible.cfg
+│       ├── inventories
+│       │   ├── local
+│       │   │   └── hosts.yml
+│       │   └── prod
+│       ├── playbooks
+│       │   ├── bootstrap.yml
+│       │   └── k3s.yml
+│       └── roles
+│           └── k3s
+│               └── tasks
+│                   ├── main.yml
+│                   ├── master.yml
+│                   └── worker.yml
+├── docs
+│   ├── architecture.md
+│   └── environments.md
+├── environments
+│   ├── local
+│   │   └── incus
+│   │       ├── config.yaml
+│   │       ├── create.sh
+│   │       └── destroy.sh
+│   └── prod
+│       └── opentofu
+│           ├── environments
+│           └── modules
+├── Makefile
+├── platform
+│   └── kubernetes
+└── README.md
+
+```
