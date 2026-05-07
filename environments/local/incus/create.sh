@@ -1,10 +1,13 @@
 #!/bin/bash
-set -e
+set -euo pipefail
+
 
 NODES=("vm-master" "vm-worker-1" "vm-worker-2")
 IPS=("10.91.214.10" "10.91.214.11" "10.91.214.12")
 
 PUBKEY=$(cat ~/.ssh/id_rsa.pub)
+CPU="4"
+MEMORY="4GiB"
 
 echo "[INFO] Creating Incus VMs with static IPs..."
 
@@ -17,6 +20,8 @@ for i in "${!NODES[@]}"; do
   else
 
     incus launch images:ubuntu/22.04 "$node" --vm \
+      --config limits.cpu="$CPU" \
+      --config limits.memory="$MEMORY" \
       -c user.user-data="#cloud-config
 
 package_update: true

@@ -35,3 +35,18 @@ eng-lab/
 └── README.md
 
 ```
+
+---
+## ARGOCD 
+
+
+### Install and setting up the argocd 
+```bash
+kubectl create ns argocd 
+kubectl apply --server-side -k "https://github.com/argoproj/argo-cd/manifests/cluster-install?ref=stable" -n argocd
+```
+
+Get Pass
+```bash
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
+```
