@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+
+metadata:
+  name: zabbix
+  namespace: argocd
+
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/antonioflaviosf/eng_lab.git'
+    targetRevision: main
+    path: platform/kubernetes/apps/zabbix
+  
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: zabbix
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
