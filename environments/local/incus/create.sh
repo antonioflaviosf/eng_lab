@@ -15,30 +15,65 @@ for i in "${!NODES[@]}"; do
   if incus list | grep -q "$node"; then
     echo "[WARN] $node already exists, skipping"
   else
+
     incus launch images:ubuntu/22.04 "$node" --vm \
       -c user.user-data="#cloud-config
+
+package_update: true
+package_upgrade: true
+
+packages:
+  - openssh-server
+  - qemu-guest-agent
+
 users:
+  - default
   - name: ubuntu
-    sudo: ALL=(ALL) NOPASSWD:ALL
     groups: sudo
     shell: /bin/bash
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    lock_passwd: true
     ssh-authorized-keys:
       - $PUBKEY
-package_update: true
-packages:
-  - qemu-guest-agent"
+
+runcmd:
+  - systemctl enable ssh
+  - systemctl restart ssh
+  - systemctl enable qemu-guest-agent
+  - systemctl start qemu-guest-agent
+"
 
     echo "[OK] $node created"
 
-    # aguarda VM inicializar
-    sleep 5
+    echo "[INFO] Waiting VM boot..."
+    sleep 10
 
     # define IP fixo
     incus config device override "$node" eth0 ipv4.address="$ip"
+
     echo "[OK] $node IP set to $ip"
 
     incus restart "$node"
   fi
 done
 
-echo "[INFO] Instances created"
+echo "[INFO] Install and configuring SSH and keys on all VMs..." 
+for node in "${NODES[@]}"; do
+  incus exec "$node" -- sudo apt-get update
+  incus exec "$node" -- sudo apt-get install -y ssh
+  incus exec "$node" -- sudo -u ubuntu -- ssh-keygen \
+  -t ed25519 \
+  -f /home/ubuntu/.ssh/id_ed25519 \
+  -N ""
+  incus exec "$node" -- sudo -u ubuntu -- bash -c '
+mkdir -p /home/ubuntu/.ssh
+chmod 700 /home/ubuntu/.ssh
+echo "'"$PUBKEY"'" >> /home/ubuntu/.ssh/authorized_keys
+chmod 600 /home/ubuntu/.ssh/authorized_keys
+'
+  
+done
+
+echo "[INFO] All VMs created and configured"
+
+echo '$(PUBKEY)'

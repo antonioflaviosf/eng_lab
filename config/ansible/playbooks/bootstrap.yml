@@ -13,4 +13,5 @@
           - curl
           - vim
           - git
+          - ssh
         state: present
