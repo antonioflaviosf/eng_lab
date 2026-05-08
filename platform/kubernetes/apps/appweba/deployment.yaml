@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: appweba
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: weba-deployment
+  namespace: appweba
+  labels:
+    app: weba
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: weba
+  template:
+    metadata:
+      labels:
+        app: weba
+    spec:
+      containers:
+      - name: weba-container
+        image: nginxdemos/hello
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: weba-service
+  namespace: appweba
+spec:
+  selector:
+    app: weba
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: weba-ingress
+  namespace: appweba
+  annotations:
+    # Annotation para o Cert-Manager continuar funcionando com Traefik
+    cert-manager.io/cluster-issuer: "letsencrypt-cluster-staging"
+    # Opcional: Forçar redirecionamento para HTTPS via Traefik
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+spec:
+  # Alterado de 'nginx' para 'traefik'
+  ingressClassName: traefik 
+  tls:
+  - hosts:
+    - weba.local
+    secretName: weba-tls-cert # O cert-manager salvará o certificado aqui
+  rules:
+  - host: weba.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: weba-service
+            port:
+              number: 80
