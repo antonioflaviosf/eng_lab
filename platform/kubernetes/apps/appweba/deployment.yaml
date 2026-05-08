@@ -11,7 +11,7 @@ metadata:
   labels:
     app: weba
 spec:
-  replicas: 2
+  replicas: 2 
   selector:
     matchLabels:
       app: weba
@@ -44,19 +44,19 @@ kind: Ingress
 metadata:
   name: weba-ingress
   namespace: appweba
-  annotations:
-    # Annotation para o Cert-Manager continuar funcionando com Traefik
-    cert-manager.io/cluster-issuer: "letsencrypt-cluster-staging"
-    # Opcional: Forçar redirecionamento para HTTPS via Traefik
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/router.tls: "true"
+  # annotations:
+  #   # Annotation para o Cert-Manager continuar funcionando com Traefik
+  #   # cert-manager.io/cluster-issuer: "letsencrypt-cluster-staging"
+  #   # Opcional: Forçar redirecionamento para HTTPS via Traefik
+  #   traefik.ingress.kubernetes.io/router.entrypoints: websecure
+  #   traefik.ingress.kubernetes.io/router.tls: "true"
 spec:
   # Alterado de 'nginx' para 'traefik'
   ingressClassName: traefik 
   tls:
   - hosts:
     - weba.local
-    secretName: weba-tls-cert # O cert-manager salvará o certificado aqui
+    # secretName: weba-tls-cert # O cert-manager salvará o certificado aqui
   rules:
   - host: weba.local
     http:
