@@ -18,6 +18,13 @@ spec:
         controller:
           replicaCount: 1
 
+          ingressClassResource:
+            name: nginx
+            enabled: true
+            default: false
+
+          ingressClass: nginx
+
           service:
             type: NodePort
 
