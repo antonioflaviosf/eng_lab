@@ -21,12 +21,12 @@ spec:
           ingressClassResource:
             name: nginx
             enabled: true
-            default: false
+            default: true   # DEFINIDO O NGINX COMO INGRESS PADRÃO
 
           ingressClass: nginx
 
           service:
-            type: NodePort
+            type: LoadBalancer  # CORRIGIDO: Permite que o K3s exponha o NGINX nas portas 80 e 443
 
           metrics:
             enabled: true
