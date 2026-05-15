@@ -52,7 +52,7 @@ metadata:
   #   traefik.ingress.kubernetes.io/router.tls: "true"
 spec:
   # Alterado de 'nginx' para 'traefik'
-  ingressClassName: traefik 
+  ingressClassName: nginx
   tls:
   - hosts:
     - weba.local
