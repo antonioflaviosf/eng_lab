@@ -21,7 +21,7 @@ spec:
           ingressClassResource:
             name: nginx
             enabled: true
-            default: true   # DEFINIDO O NGINX COMO INGRESS PADRÃO
+            default: true       # DEFINIDO O NGINX COMO INGRESS PADRÃO
 
           ingressClass: nginx
 
