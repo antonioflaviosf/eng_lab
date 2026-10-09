@@ -1,0 +1,6 @@
+# Não use a chave "path": ela é reservada pelo gerador Git do ApplicationSet.
+name: appweba
+project: apps
+namespace: appweba
+repoURL: https://github.com/antonioflaviosf/appweba.git
+revision: main

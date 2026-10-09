@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+
+metadata:
+  name: apps
+  namespace: argocd
+
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+
+  generators:
+    - git:
+        repoURL: https://github.com/antonioflaviosf/eng_lab.git
+        revision: main
+        files:
+          - path: platform/kubernetes/argocd/apps/*.yaml
+
+  template:
+    metadata:
+      name: '{{.name}}'
+
+    spec:
+      project: '{{.project}}'
+
+      source:
+        repoURL: '{{.repoURL}}'
+        targetRevision: '{{.revision}}'
+        path: deploy/overlays/local
+
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{.namespace}}'
+
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+
+        syncOptions:
+          - CreateNamespace=true

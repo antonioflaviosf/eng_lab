@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+
+metadata:
+  name: apps
+  namespace: argocd
+
+spec:
+  description: Aplicações, cada uma no próprio repositório
+
+  sourceRepos:
+    - https://github.com/antonioflaviosf/*
+
+  destinations:
+    - server: https://kubernetes.default.svc
+      namespace: '*'
+
+  # Só o Namespace é liberado em nível de cluster (exigido pelo CreateNamespace=true)
+  clusterResourceWhitelist:
+    - group: ''
+      kind: Namespace

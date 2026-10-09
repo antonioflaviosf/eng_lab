@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: appweba
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: appweba.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: appweba
+            port:
+              number: 80

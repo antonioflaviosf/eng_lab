@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appweba
+  labels:
+    app: appweba
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appweba
+  template:
+    metadata:
+      labels:
+        app: appweba
+    spec:
+      containers:
+      - name: appweba
+        image: nginxdemos/hello:0.4
+        ports:
+        - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            memory: 128Mi
